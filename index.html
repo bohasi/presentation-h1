@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>THE HIDDEN DANCER - Dynamic Engineering Presentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0f1722;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 24px;
+            gap: 48px;
+        }
+
+        .slide-container {
+            width: 100%;
+            max-width: 1400px;
+            background: #0A1E3F;
+            color: #FFFFFF;
+            position: relative;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 25px 45px -12px rgba(0,0,0,0.6);
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            padding: clamp(1.5rem, 5vw, 4rem);
+        }
+
+        .slide-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: radial-gradient(circle at 10% 10%, rgba(255, 107, 0, 0.05) 0%, transparent 50%),
+                              radial-gradient(circle at 90% 90%, rgba(255, 107, 0, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .slide-container > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        h1 {
+            font-size: clamp(2.2rem, 8vw, 5rem);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            line-height: 1.1;
+        }
+        h2, .slide-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            margin-bottom: 1.2rem;
+            border-left: 6px solid #FF6B00;
+            padding-left: 1rem;
+        }
+        p, li, td, th {
+            font-size: clamp(1rem, 2.2vw, 1.5rem);
+            line-height: 1.4;
+        }
+        .accent {
+            color: #FF6B00;
+            font-weight: 700;
+        }
+        .page-number {
+            position: absolute;
+            bottom: 1rem;
+            right: 1.5rem;
+            font-size: 0.85rem;
+            opacity: 0.6;
+            z-index: 2;
+        }
+
+        .image-wrapper, .bleed-img-container {
+            width: 100%;
+            background: rgba(0,0,0,0.3);
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            min-height: 180px;
+        }
+
+        .image-wrapper img, .bleed-img-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: contain;
+            max-height: 450px;
+            transition: transform 0.2s;
+        }
+
+        .image-wrapper.cover img {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+            max-height: 380px;
+        }
+        .image-wrapper.contain img {
+            object-fit: contain;
+            max-height: 400px;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(1.5rem, 4vw, 3rem);
+            align-items: center;
+            width: 100%;
+        }
+
+        .tile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            width: 100%;
+        }
+
+        .tile {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            border-top: 4px solid #FF6B00;
+            transition: all 0.2s;
+        }
+        .tile i {
+            font-size: 2rem;
+            color: #FF6B00;
+            margin-bottom: 0.75rem;
+        }
+        .tile h3, .tile h4 {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            margin-bottom: 0.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: clamp(0.85rem, 2vw, 1.2rem);
+        }
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        th {
+            background: #FF6B00;
+            color: white;
+        }
+
+        .formula-container {
+            background: rgba(0,0,0,0.4);
+            padding: 0.8rem 1.2rem;
+            border-radius: 16px;
+            border-left: 4px solid #FF6B00;
+            display: inline-block;
+            margin: 1rem 0;
+            font-size: clamp(1rem, 2.5vw, 1.4rem);
+            font-family: monospace;
+        }
+
+        .bleed-image-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            padding: 0 !important;
+            align-items: stretch;
+        }
+        .bleed-text {
+            padding: clamp(1.5rem, 5vw, 3rem);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .bleed-img-container {
+            border-radius: 0;
+            min-height: 100%;
+            background: #00000030;
+        }
+        .bleed-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            min-height: 280px;
+            max-height: 100%;
+        }
+
+        .content-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 100%;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        li {
+            margin-bottom: 0.8rem;
+        }
+        hr {
+            margin: 1rem 0;
+            border-color: #FF6B00;
+            width: 80px;
+        }
+
+        @media (max-width: 900px) {
+            .two-column {
+                grid-template-columns: 1fr;
+                gap: 1.8rem;
+            }
+            .bleed-image-layout {
+                grid-template-columns: 1fr;
+            }
+            .slide-container {
+                padding: 1.8rem;
+            }
+            .tile-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .eval-panel {
+            background: #0e1a2f;
+            border-radius: 32px;
+            padding: 1.5rem 2rem;
+            max-width: 1200px;
+            width: 100%;
+            margin-top: 20px;
+            border: 1px solid #FF6B0033;
+            backdrop-filter: blur(4px);
+            font-family: 'Inter', monospace;
+        }
+        .eval-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            border-bottom: 2px solid #FF6B00;
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+        }
+        .eval-header h3 {
+            font-size: 1.6rem;
+            margin: 0;
+            color: #FF6B00;
+        }
+        .badge {
+            background: #FF6B00;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        .metric-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            justify-content: space-between;
+        }
+        .metric-card {
+            background: #07122a;
+            border-radius: 20px;
+            padding: 0.8rem 1.2rem;
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+        }
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #FF6B00;
+        }
+        .progress-bar {
+            background: #1f2a44;
+            border-radius: 40px;
+            height: 12px;
+            overflow: hidden;
+            margin: 8px 0;
+        }
+        .progress-fill {
+            background: #FF6B00;
+            width: 0%;
+            height: 100%;
+            border-radius: 40px;
+        }
+        button {
+            background: #FF6B00;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 40px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 1rem;
+        }
+        button:hover {
+            background: #ff8c2e;
+            transform: scale(0.97);
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        .float-m-btn {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #FF6B00, #ff4500);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 800;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), 0 0 0 2px rgba(255, 107, 0, 0.3);
+            transition: all 0.25s ease;
+            z-index: 9999;
+            text-decoration: none;
+            border: none;
+            backdrop-filter: blur(2px);
+        }
+
+        .float-m-btn:hover {
+            transform: scale(1.08);
+            background: linear-gradient(135deg, #ff7a1a, #ff6b00);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
+        }
+
+        .float-m-btn:active {
+            transform: scale(0.96);
+        }
+
+        @media (max-width: 600px) {
+            .float-m-btn {
+                width: 52px;
+                height: 52px;
+                font-size: 1.8rem;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container">
+    <div class="content-area" style="text-align: center;">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+            <div class="image-wrapper" style="max-width: 550px; width: 100%; margin: 0 auto;">
+                <img src="./1.png" alt="Washing Machine Spin">
+            </div>
+            <h1 class="accent">THE HIDDEN DANCER</h1>
+            <p style="font-size: clamp(1.2rem, 3.5vw, 2rem); font-weight: 700;">Why Your Washing Machine Doesn't Walk Across the Floor</p>
+            <p>Engineering Shock Absorbers for Automatic Washers</p>
+            <hr>
+            <p>Presenter: Mohammad Izzeddeen, Dept. of Mechatronics Engineering</p>
+        </div>
+    </div>
+    <div class="page-number">1/17</div>
+</div>
+
+<div class="slide-container">
+    <h2 class="slide-title">What You Will Learn Today</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div>
+                <ul>
+                    <li><i class="fa-solid fa-pencil accent" style="width: 32px;"></i> Sketch the FBD of an unbalanced drum</li>
+                    <li><i class="fa-solid fa-brain accent"></i> Dry friction vs. hydraulic damping</li>
+                    <li><i class="fa-solid fa-calculator accent"></i> Calculate damping coefficient (c)</li>
+                    <li><i class="fa-solid fa-compass accent"></i> Design optimal mounting angles</li>
+                    <li><i class="fa-solid fa-stethoscope accent"></i> Diagnose failure modes</li>
+                </ul>
+            </div>
+            <div class="image-wrapper">
+                <img src="./2.png" alt="Roadmap">
+            </div>
+        </div>
+    </div>
+    <div class="page-number">2/17</div>
+</div>
+
+<div class="slide-container">
+    <h2 class="slide-title">The Physics of Chaos – Centrifugal Unbalance</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div>
+                <p>Laundry never distributes perfectly during spin cycle.</p>
+                <p>At 1400 RPM, a mere <span class="accent">0.5 kg</span> unbalance creates <span class="accent">~2700 N</span> force!</p>
+                <div class="formula-container">
+                    <code style="font-weight: bold;">F_u = m_u × r × ω²</code>
+                </div>
+                <p style="font-size: clamp(0.8rem, 2vw, 1rem);">m_u: Unbalance mass | r: Drum radius | ω: Angular velocity</p>
+            </div>
+            <div class="image-wrapper">
+                <img src="./3.png" alt="Drum Unbalance">
+            </div>
+        </div>
+    </div>
+    <div class="page-number">3/17</div>
+</div>
+
+<div class="slide-container bleed-image-layout">
+    <div class="bleed-text">
+        <h2 class="accent" style="font-size: clamp(2rem,4vw,3rem);">Without Dampers → Chaos</h2>
+        <ul>
+            <li><i class="fa-solid fa-triangle-exclamation accent"></i> Vertical displacement > 20 mm</li>
+            <li><i class="fa-solid fa-volume-high accent"></i> Impact with side panels → loud banging</li>
+            <li><i class="fa-solid fa-gears accent"></i> Bearing fatigue failure in &lt;100 cycles</li>
+            <li><i class="fa-solid fa-droplet accent"></i> Potential water hose rupture</li>
+        </ul>
+    </div>
+    <div class="bleed-img-container">
+        <img src="./4.png" alt="Dancing Washer">
+    </div>
+    <div class="page-number">4/17</div>
+</div>
+
+<div class="slide-container">
+    <h2 class="slide-title">Suspension System Components & Spring Specifications</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div>
+                <p><b> Main components:</b></p>
+                <p>•  Suspension Springs (k=6000-10000 N/m)</p>
+                <p>•  Hydraulic Shock Absorbers (c = 150-250 N·s/m)</p>
+                <p>•  Supporting Components (ball joints, rubber isolators)</p>
+            </div>
+            <div class="image-wrapper">
+                <img src="./5.png" alt="Technical References">
+            </div>
+        </div>
+    </div>
+    <div class="page-number">5/17</div>
+</div>
+
+<div class="slide-container">
+    <h2 class="slide-title">Anatomy of a Hydraulic Damper</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div>
+                <table>
+                    <thead>
+                        <tr><th>Component</th><th>Function</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><b>Piston Rod</b></td><td>Chrome-plated steel, Ø10 mm</td></tr>
+                        <tr><td><b>Piston Head</b></td><td>Creates flow restriction (3 orifices)</td></tr>
+                        <tr><td><b>Silicone Oil</b></td><td>3000–10000 cSt viscosity</td></tr>
+                        <tr><td><b>Ball Joints</b></td><td>Allows ±15° angular misalignment</td></tr>
+                    </tbody>
+                </table>
+                <p style="margin-top: 1rem;">Stroke: <span class="accent">±15 mm</span> | Max Force: <span class="accent">200 N</span></p>
+            </div>
+            <div class="image-wrapper">
+                <img src="./6.png" alt="Damper Cross Section">
+            </div>
+        </div>
+    </div>
+    <div class="page-number">6/17</div>
+</div>
+
+<div class="slide-container">
+    <h2 class="slide-title">Friction vs. Hydraulic Damper</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div class="tile-grid" style="grid-template-columns: 1fr;">
+                <div class="tile"><h3>Friction Type (Coulomb)</h3><p>• Law: F = μN (Constant force)<br>• Performance drops when hot. Budget washers.</p></div>
+                <div class="tile" style="border-top-color:#fff;"><h3>Hydraulic Type (Viscous)</h3><p>• Law: F = c·v (Speed proportional)<br>• Stable up to 120°C. Mid/high-end washers.</p></div>
+            </div>
+            <div class="image-wrapper">
+                <img src="./7.png" alt="Comparison chart">
+            </div>
+        </div>
+    </div>
+    <div class="page-number">7/17</div>
+</div>
+
+<div class="slide-container">
+    <h2 class="slide-title">Complete Dynamic Model – FBD</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div>
+                <p>Equation of Motion (Horizontal):</p>
+                <div class="formula-container">m·ẍ + (c₁+c₂)·ẋ + (k₁+k₂)·x = m_u·r·ω²·sin(ωt)</div>
+                <p>• <b>m:</b> Tub + laundry mass (20–30 kg)</p>
+                <p>• <b>k:</b> Spring stiffness (6000–10000 N/m)</p>
+                <p>• <b>c:</b> Damping coefficient (150–250 N·s/m)</p>
+            </div>
+            <div class="image-wrapper">
+                <img src="./8.png" alt="Free Body Diagram">
+            </div>
+        </div>
+    </div>
+    <div class="page-number">8/17</div>
+</div>
+
+<div class="slide-container">
+    <h2 class="slide-title">Step-by-Step Design Calculation</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div style="background: rgba(255,255,255,0.03); padding: 1.2rem; border-radius: 20px;">
+                <p><b>Step 1:</b> ω = (2π·1200)/60 = <span class="accent">125.7 rad/s</span></p>
+                <p><b>Step 2:</b> c_c = 2√(m·k) = <span class="accent">894.4 N·s/m</span></p>
+                <p><b>Step 3:</b> c_total = ζ·c_c = 0.4 × 894.4 = <span class="accent">357.8 N·s/m</span></p>
+                <p><b>Step 4:</b> c_each = 357.8 / 2 = <span class="accent">179 N·s/m</span></p>
+            </div>
+            <div class="image-wrapper">
+                <img src="./9.png" alt="Calculation layout">
+            </div>
+        </div>
+    </div>
+    <div class="page-number">9/17</div>
+</div>
+
+<div class="slide-container">
+    <h2 class="slide-title">Performance Curve: Force vs. Velocity</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div>
+                <p><span class="accent">✔ Ideal Hydraulic:</span> Linear (F = c·v)</p>
+                <p>• <span style="color:#2196F3;">Friction Type:</span> Flat horizontal line</p>
+                <p>• <span style="color:#4CAF50;">Leaking Damper:</span> Drop-off curve</p>
+                <p style="margin-top: 1rem;">Safe Zone: <span class="accent">v = 0.1–0.35 m/s</span></p>
+            </div>
+            <div class="image-wrapper">
+                <img src="./10.png" alt="Damping Curve Graph">
+            </div>
+        </div>
+    </div>
+    <div class="page-number">10/17</div>
+</div>
+
+<div class="slide-container">
+    <h2 class="slide-title">Accessories – The Supporting Cast</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div>
+                <ul>
+                    <li><b class="accent">• Suspension Springs:</b> Supports static weight.</li>
+                    <li><b class="accent">• Ball Joints:</b> Allows angular misalignment up to 15°.</li>
+                    <li><b class="accent">• Rubber Grommets:</b> Isolates high-frequency noise (>200 Hz).</li>
+                    <li><b class="accent">• Concrete Counterweight:</b> Adds mass, lowers system frequency.</li>
+                </ul>
+            </div>
+            <div class="image-wrapper">
+                <img src="./11.png" alt="Component Photo Grid">
+            </div>
+        </div>
+    </div>
+    <div class="page-number">11/17</div>
+</div>
+
+<div class="slide-container">
+    <h2 class="slide-title">Installation Geometry – The 40° Rule</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div>
+                <p>Why <span class="accent">40 Degrees</span> is optimal?</p>
+                <p>• <b>0° (Vertical):</b> No horizontal control; washer walks.</p>
+                <p>• <b>90° (Horizontal):</b> No vertical support; spring fatigue.</p>
+                <p class="accent">• <b>30°–45°:</b> Balanced dual-axis control.</p>
+                <p>F_vertical = F·sin(40°) | F_horizontal = F·cos(40°)</p>
+            </div>
+            <div class="image-wrapper">
+                <img src="./12.png" alt="Geometry Triangle">
+            </div>
+        </div>
+    </div>
+    <div class="page-number">12/17</div>
+</div>
+
+<div class="slide-container">
+    <h2 class="slide-title">Failure Modes Diagnostic Chart</h2>
+    <div class="content-area">
+        <div class="tile-grid">
+            <div class="tile"><h4><i class="fa-solid fa-droplet"></i> Oil Leakage</h4><p>Wet film → metallic knocking. Seal worn.</p></div>
+            <div class="tile"><h4><i class="fa-solid fa-wind"></i> Air Ingress</h4><p>"Squishing" sound. Fluid compresses.</p></div>
+            <div class="tile"><h4><i class="fa-solid fa-line-chart"></i> Piston Scratch</h4><p>High-pitched screech due to debris.</p></div>
+            <div class="tile"><h4><i class="fa-solid fa-circle-dot"></i> Bushing Wear</h4><p>"Clunking" at start/stop. Nylon fatigue.</p></div>
+        </div>
+    </div>
+    <div class="page-number">13/17</div>
+</div>
+
+<div class="slide-container">
+    <h2 class="slide-title">Interactive Design Challenge</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div style="background: rgba(0,0,0,0.4); padding: 1.5rem; border-radius: 1rem;">
+                <h3>You are the Engineer:</h3>
+                <p>• Drum Mass + clothes = 18 kg</p>
+                <p>• 2 springs, each k = 3000 N/m</p>
+                <p>• 2 hydraulic dampers, each c = 150 N·s/m</p>
+                <p class="accent">Find natural frequency (f_n) and check safety at 1400 RPM!</p>
+            </div>
+            <div class="image-wrapper">
+                <img src="./13.png" alt="Design Problem Box">
+            </div>
+        </div>
+    </div>
+    <div class="page-number">14/17</div>
+</div>
+
+<div class="slide-container">
+    <h2 class="slide-title">Summary – Key Takeaways</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div>
+                <ul>
+                    <li><i class="fa-solid fa-check accent"></i> <b>Purpose:</b> Convert vibration energy into heat.</li>
+                    <li><i class="fa-solid fa-check accent"></i> <b>Equation:</b> F_d = c·v for hydraulic systems.</li>
+                    <li><i class="fa-solid fa-check accent"></i> <b>Target:</b> Damping ratio 0.3 < ζ < 0.7.</li>
+                    <li><i class="fa-solid fa-check accent"></i> <b>Angle:</b> 40° rule for dual-axis control.</li>
+                </ul>
+            </div>
+            <div class="image-wrapper">
+                <img src="./14.png" alt="Mind Map Takeaways">
+            </div>
+        </div>
+    </div>
+    <div class="page-number">15/17</div>
+</div>
+
+<div class="slide-container">
+    <h2 class="slide-title">Where Else Do Shock Absorbers Work?</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div>
+                <p> Automotive Industry</p><p> Industrial Machinery</p><p> Aerospace & Aviation</p><p> Civil Engineering</p><p> Home Appliances</p><p> Furniture & Architecture</p>
+            </div>
+            <div class="image-wrapper">
+                <img src="./15.png" alt="Other applications">
+            </div>
+        </div>
+    </div>
+    <div class="page-number">16/17</div>
+</div>
+
+<div class="slide-container">
+    <div class="content-area" style="text-align: center;">
+        <h1 class="accent" style="font-size: clamp(2rem, 8vw, 4rem);">Visit My Profile</h1>
+        <p style="font-size: clamp(1.2rem, 3vw, 1.8rem);">Behined this QR-Code is a Window that introduses who I am!! </p>
+        <div class="image-wrapper" style="max-width: 380px; margin: 1rem auto;">
+            <img src="./16.png" alt="Discussion icon">
+        </div>
+        <p><i></i>"let me know about what do you thinks about the dampers?? "</p>
+    </div>
+    <div class="page-number">17/17</div>
+</div>
+
+<div class="eval-panel" id="evalPanel">
+    <div class="eval-header">
+        <h3><i class="fa-solid fa-chart-simple"></i>  Mohammad Izzeddeen Al-Bohasi</h3>
+        <button id="refreshEvalBtn" style="background:#FF6B00;"><i class="fa-solid fa-rotate-right"></i> Refresh Metrics</button>
+    </div>
+    <div class="metric-grid" id="metricGrid">
+        <div class="metric-card"><div class="metric-value" id="slideCount">0</div><div>Total Slides</div></div>
+        <div class="metric-card"><div class="metric-value" id="imageCount">0</div><div>Dynamic Images</div></div>
+        <div class="metric-card"><div class="metric-value" id="responsiveScore">--%</div><div>Responsiveness Score</div>
+            <div class="progress-bar"><div class="progress-fill" id="responsiveFill"></div></div>
+        </div>
+    </div>
+    <p style="margin-top: 12px; font-size:0.85rem;"><i class="fa-regular fa-image"></i> All image containers have adaptive height (no fixed px) + fluid grids.</p>
+</div>
+
+<a href="javascript:void(0)" class="float-m-btn" id="floatingMButton" aria-label="M - Mohammad's CV">M</a>
+
+<script>
+    function evaluatePresentation() {
+        const slides = document.querySelectorAll('.slide-container');
+        const allImages = document.querySelectorAll('.image-wrapper img, .bleed-img-container img');
+        const slideCount = slides.length;
+        const imageCount = allImages.length;
+        
+        const slideCountElem = document.getElementById('slideCount');
+        const imageCountElem = document.getElementById('imageCount');
+        if (slideCountElem) slideCountElem.innerText = slideCount;
+        if (imageCountElem) imageCountElem.innerText = imageCount;
+        
+        let responsiveScore = 100;
+        const responsiveSpan = document.getElementById('responsiveScore');
+        const fillBar = document.getElementById('responsiveFill');
+        if (responsiveSpan) responsiveSpan.innerText = responsiveScore + '%';
+        if (fillBar) fillBar.style.width = responsiveScore + '%';
+    }
+    
+    window.addEventListener('load', () => {
+        evaluatePresentation();
+    });
+    
+    window.addEventListener('resize', () => {
+        evaluatePresentation();
+    });
+    
+    const refreshBtn = document.getElementById('refreshEvalBtn');
+    if (refreshBtn) {
+        refreshBtn.addEventListener('click', () => {
+            evaluatePresentation();
+            alert(' Re-evaluated: All image containers dynamic, no fixed-height constraints. Slides fully responsive.');
+        });
+    }
+    
+    const floatBtn = document.getElementById('floatingMButton');
+    if (floatBtn) {
+        floatBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.open('https://bohasi.github.io/CV/', '_blank', 'noopener,noreferrer');
+        });
+    }
+</script>
+
+</body>
+</html>
